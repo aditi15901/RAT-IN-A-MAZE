@@ -51,7 +51,7 @@ void remove_at_first(void)
 
 int method(int **maze, int startx, int starty, int finishx, int finishy, int x, int y, int** visited) //u can rename it...this is the lee algo
 {
-    visited=insert_at_tail(startx,starty,visited);
+    int a=0,b=0,c=0,d=0;
     while (head != NULL)
     {
          remove_at_first();
@@ -64,12 +64,32 @@ int method(int **maze, int startx, int starty, int finishx, int finishy, int x, 
         {
             value++;
             if (startx != x - 1 && maze[startx + 1][starty] == 0 && visited[startx +1][starty]==0)
-                i=method(maze,startx+1,starty,finishx,finishy,x,y,visited);
+            {
+                visited=insert_at_tail(startx+1, starty,visited);
+                a=1;
+            }
             if (starty != y - 1 && maze[startx][starty + 1] == 0 && visited[startx][starty +1]==0)
-                i=method(maze,startx,starty+1,finishx,finishy,x,y,visited);
+            {
+                visited=insert_at_tail(startx, starty+1,visited);
+                b=1;
+            }
             if (starty > 0 && maze[startx][starty - 1] == 0 && visited[startx][starty-1]==0)
-                i=method(maze,startx,starty-1,finishx,finishy,x,y,visited);
+            {
+                visited=insert_at_tail(startx, starty-1,visited);
+                c=1;
+            }
             if (startx > 0 && maze[startx - 1][starty] == 0 && visited[startx -1][starty]==0)
+            {
+                visited=insert_at_tail(startx-1, starty,visited);
+                d=1;
+            }
+            if(a==1)
+                i=method(maze,startx+1,starty,finishx,finishy,x,y,visited);
+            if(b==1)
+                i=method(maze,startx,starty+1,finishx,finishy,x,y,visited);
+            if(c==1)
+                i=method(maze,startx,starty-1,finishx,finishy,x,y,visited);
+            if(d==1)
                 i=method(maze,startx-1,starty,finishx,finishy,x,y,visited);
         }
     }
@@ -126,6 +146,7 @@ int main()
     scanf(" %c%d%c%d%c", &random, &finishx, &random, &finishy, &random);
     if (finishx < 0 || finishx > x - 1 || finishy < 0 || finishy > y - 1)
         printf("Error: Wrong inputs\n");
+    visited=insert_at_tail(startx,starty,visited);
     found=method(maze, startx, starty, finishx, finishy, x, y,visited);
     if(found==0)
     {
@@ -136,4 +157,3 @@ int main()
 //backtracking using stacks...v have to try getting all teh possible paths from this, then using lee v can find the shortest path also
 //have to see if the above is possible
 //lee algorithm which is based on BFS...this only gives the shortest path length and not the path itself
-
