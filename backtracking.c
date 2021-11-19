@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-int value = 0; //used to calculate the distance from the source
 int i = 0;
 int path_number = 0;
 char random;
@@ -186,7 +185,10 @@ int **insert_at_tail(int startx, int starty, int **visited)
     temp = (node *)malloc(sizeof(node));
     temp->xcoord = startx;
     temp->ycoord = starty;
-    temp->distance = value;
+    if (path==NULL)
+        temp->distance = 0 ;
+    else
+        temp->distance=path->distance +1;
     temp->next = NULL;
     if (head == NULL)
     {
@@ -211,12 +213,13 @@ void remove_at_first(void)
     path = temp;
 }
 
-int lee(int **maze, int startx, int starty, int finishx, int finishy, int x, int y, int **visited) //u can rename it...this is the lee algo
+int lee(int **maze, int finishx, int finishy, int x, int y, int **visited) //u can rename it...this is the lee algo
 {
-    int a = 0, b = 0, c = 0, d = 0;
     while (head != NULL)
     {
         remove_at_first();
+        int i=path->xcoord;
+        int j=path->ycoord;
         if (path->xcoord == finishx && path->ycoord == finishy)
         {
             length=path->distance +1;
@@ -225,35 +228,14 @@ int lee(int **maze, int startx, int starty, int finishx, int finishy, int x, int
         }
         else
         {
-            value++;
-            if (startx != x - 1 && maze[startx + 1][starty] == 0 && visited[startx + 1][starty] == 0)
-            {
-                visited = insert_at_tail(startx + 1, starty, visited);
-                a = 1;
-            }
-            if (starty != y - 1 && maze[startx][starty + 1] == 0 && visited[startx][starty + 1] == 0)
-            {
-                visited = insert_at_tail(startx, starty + 1, visited);
-                b = 1;
-            }
-            if (starty > 0 && maze[startx][starty - 1] == 0 && visited[startx][starty - 1] == 0)
-            {
-                visited = insert_at_tail(startx, starty - 1, visited);
-                c = 1;
-            }
-            if (startx > 0 && maze[startx - 1][starty] == 0 && visited[startx - 1][starty] == 0)
-            {
-                visited = insert_at_tail(startx - 1, starty, visited);
-                d = 1;
-            }
-            if (a == 1)
-                i = lee(maze, startx + 1, starty, finishx, finishy, x, y, visited);
-            if (b == 1)
-                i = lee(maze, startx, starty + 1, finishx, finishy, x, y, visited);
-            if (c == 1)
-                i = lee(maze, startx, starty - 1, finishx, finishy, x, y, visited);
-            if (d == 1)
-                i = lee(maze, startx - 1, starty, finishx, finishy, x, y, visited);
+            if (i != x - 1 && maze[i + 1][j] == 0 && visited[i + 1][j] == 0)
+                visited = insert_at_tail(i + 1, j, visited);
+            if (j != y - 1 && maze[i][j + 1] == 0 && visited[i][j + 1] == 0)
+                visited = insert_at_tail(i, j + 1, visited);
+            if (j > 0 && maze[i][j - 1] == 0 && visited[i][j - 1] == 0)
+                visited = insert_at_tail(i, j - 1, visited);
+            if (i > 0 && maze[i - 1][j] == 0 && visited[i - 1][j] == 0)
+                visited = insert_at_tail(i - 1, j, visited);
         }
     }
     return i;
@@ -319,7 +301,15 @@ int main()
     if (finishx < 0 || finishx > x - 1 || finishy < 0 || finishy > y - 1)
         printf("Error: Wrong inputs\n");
     visited = insert_at_tail(startx, starty, visited);
-    found = lee(maze, startx, starty, finishx, finishy, x, y, visited);
+    found = lee(maze, finishx, finishy, x, y, visited);
+    /*for(i=0;i<x;i++)
+    {
+        for(j=0;j<y-1;j++)
+        {
+            printf("%d ",visited[i][j]);
+        }
+        printf("%d\n",visited[i][y-1]);
+    }*/
     if (found == 0)
         printf("No path\n");
     stack_push(startx, starty, direction);
