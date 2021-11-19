@@ -4,7 +4,11 @@
 
 int value = 0; //used to calculate the distance from the source
 int i = 0;
-int path_number=0;
+int path_number = 0;
+char random;
+int length=0;
+int count=1;
+int shortest_path_number=0;
 
 typedef struct node
 {
@@ -27,7 +31,7 @@ typedef struct tnode
 } tnode;
 
 tnode *stackhead = NULL;
-tnode *stacktop=NULL;
+tnode *stacktop = NULL;
 
 void stack_push(int startx, int starty, int **direction)
 {
@@ -53,99 +57,125 @@ void stack_push(int startx, int starty, int **direction)
 void stack_pop()
 {
     tnode *temp;
-    if(stacktop==stackhead)
+    if (stacktop == stackhead)
     {
-        stacktop=NULL;
-        stackhead=NULL;
+        stacktop = NULL;
+        stackhead = NULL;
     }
     else
     {
         temp = stacktop->prev;
         temp->next = NULL;
-        stacktop=temp;
+        stacktop = temp;
     }
-    
 }
 
 void backtracking(int startx, int starty, int finishx, int finishy, int **maze, int **direction, int x, int y)
 {
-    //if direction=0
-    //if direction=1
-    //if direction=2
-    //if direction=3
-    //if direction=4 
-    if (startx > 0 && maze[startx - 1][starty] == 0 && direction[startx][starty] == 0 && direction[startx-1][starty]!=3)
+    //if direction=0 try top
+    //if direction=1 try left
+    //if direction=2 try bottom
+    //if direction=3 try right
+    //if direction=4 all have been tried
+    if (startx > 0 && maze[startx - 1][starty] == 0 && direction[startx][starty] == 0 && direction[startx - 1][starty] == 0)
     {
-        direction[startx][starty]=1;
-        stack_push(startx-1,starty,direction);
-        if(startx-1==finishx && starty==finishy)
+        direction[startx][starty] = 1;
+        stack_push(startx - 1, starty, direction);
+        count++;
+        if (startx - 1 == finishx && starty == finishy)
         {
             path_number++;
-            print_path();
-            return;
+            display_path(count);
+            stack_pop();
+            count--;
         }
         else
-            backtracking(startx-1,starty,finishx,finishy,maze,direction,x,y);
+            backtracking(startx - 1, starty, finishx, finishy, maze, direction, x, y);
     }
     else
-        direction[startx][starty]=1;
-    if (starty > 0 && maze[startx][starty - 1] == 0 && direction[startx][starty] == 1 && direction[startx][starty-1]!=4)
+        direction[startx][starty] = 1;
+    if (starty > 0 && maze[startx][starty - 1] == 0 && direction[startx][starty] == 1 && direction[startx][starty - 1] == 0)
     {
-        direction[startx][starty]=2;
-        stack_push(startx,starty-1,direction);
-        if(startx==finishx && starty-1==finishy)
+        direction[startx][starty] = 2;
+        stack_push(startx, starty - 1, direction);
+        count++;
+        if (startx == finishx && starty - 1 == finishy)
         {
             path_number++;
-            print_path();
-            return;
+            display_path(count);
+            stack_pop();
+            count--;
         }
         else
-            backtracking(startx,starty-1,finishx,finishy,maze,direction,x,y);
+            backtracking(startx, starty - 1, finishx, finishy, maze, direction, x, y);
     }
     else
-        direction[startx][starty]=2;
-    if (startx != x - 1 && maze[startx + 1][starty] == 0 && direction[startx][starty] == 2 && direction[startx+1][starty]!=1)
+        direction[startx][starty] = 2;
+    if (startx != x - 1 && maze[startx + 1][starty] == 0 && direction[startx][starty] == 2 && direction[startx + 1][starty] == 0)
     {
-        direction[startx][starty]=3;
-        stack_push(startx+1,starty,direction);
-        if(startx+1==finishx && starty==finishy)
+        direction[startx][starty] = 3;
+        stack_push(startx + 1, starty, direction);
+        count++;
+        if (startx + 1 == finishx && starty == finishy)
         {
             path_number++;
-            print_path();
-            return;
+            display_path(count);
+            stack_pop();
+            count--;
         }
         else
-            backtracking(startx+1,starty,finishx,finishy,maze,direction,x,y);
+            backtracking(startx + 1, starty, finishx, finishy, maze, direction, x, y);
     }
     else
-        direction[startx][starty]=3;
-    if (starty != y - 1 && maze[startx][starty + 1] == 0 && direction[startx][starty] == 3 && direction[startx][starty+1]!=2)
+        direction[startx][starty] = 3;
+    if (starty != y - 1 && maze[startx][starty + 1] == 0 && direction[startx][starty] == 3 && direction[startx][starty + 1] == 0)
     {
-        direction[startx][starty]=4;
-        stack_push(startx,starty+1,direction);
-        if(startx==finishx && starty+1==finishy)
+        direction[startx][starty] = 4;
+        stack_push(startx, starty + 1, direction);
+        count++;
+        if (startx == finishx && starty + 1 == finishy)
         {
             path_number++;
-            print_path();
-            return;
+            display_path(count);
+            stack_pop();
+            count--;
         }
         else
-            backtracking(startx,starty+1,finishx,finishy,maze,direction,x,y);
-    }  
-    direction[startx][starty]=4;
+            backtracking(startx, starty + 1, finishx, finishy, maze, direction, x, y);
+    }
+    direction[startx][starty] = 0;
     stack_pop();
+    count--;
     return;
 }
 
-void print_path()
+void display_path(int count)
 {
-    tnode* temp=stackhead;
-    while(temp!=stacktop)
+    tnode *temp = stackhead;
+    if (random == 'A')
     {
-        printf("(%d,%d)->",temp->x,temp->y);
-        temp=temp->next;
+        if(count==length)
+            shortest_path_number++;
+        while (temp != stacktop)
+        {
+            printf("(%d,%d)->", temp->x, temp->y);
+            temp = temp->next;
+        }
+        printf("(%d,%d)\n", temp->x, temp->y);
     }
-    printf("(%d,%d)\n",temp->x,temp->y);
+    else if(random=='S')
+    {
+        if (count == length)
+        {
+            shortest_path_number++;
+            while (temp != stacktop)
+            {
+                printf("(%d,%d)->", temp->x, temp->y);
+                temp = temp->next;
+            }
+            printf("(%d,%d)\n", temp->x, temp->y);
+        }
+    }
     return;
 }
 
@@ -189,6 +219,7 @@ int lee(int **maze, int startx, int starty, int finishx, int finishy, int x, int
         remove_at_first();
         if (path->xcoord == finishx && path->ycoord == finishy)
         {
+            length=path->distance +1;
             printf("The shortest possible path is of distance %d\n", path->distance + 1);
             return i + 1;
         }
@@ -234,7 +265,6 @@ int main()
     char *c;
     int startx, starty;
     int finishx, finishy;
-    char random;
     node *path = NULL;
     int **visited;
     int **direction;
@@ -293,8 +323,17 @@ int main()
     if (found == 0)
         printf("No path\n");
     stack_push(startx, starty, direction);
-    backtracking(startx,starty,finishx,finishy,maze,direction,x,y);
-    printf("The total paths are: %d\n",path_number);
+    printf("Do you want to see all possible paths or just the shortest paths\n");
+    printf("Enter A for all paths and S for shortest: ");
+    scanf(" %c", &random);
+    if (random != 'S' && random != 'A')
+    {
+        printf("Invalid\n");
+        return 0;
+    }
+    backtracking(startx, starty, finishx, finishy, maze, direction, x, y);
+    printf("The total number of shortest paths are: %d\n",shortest_path_number);
+    printf("The total paths are: %d\n", path_number);
 }
 
 //backtracking using stacks...v have to try getting all teh possible paths from this, then using lee v can find the shortest path also
