@@ -85,17 +85,20 @@ void display_path(int count);
 
 void backtracking(int startx, int starty, int finishx, int finishy, int **maze, int **direction, int x, int y) //bakctracking algo
 {
+  
     //if direction=0 that means that the top neighbour has to looked into, whether it can be pushed into stack or not, this also indicates that this particular element has not yet been pushed into the stack
     //if direction=1 that means that the left neighbour has to looked into, whether it can be pushed into stack or not
     //if direction=2 that means that the bottom neighbour has to looked into, whether it can be pushed into stack or not
     //if direction=3 that means that the right neighbour has to looked into, whether it can be pushed into stack or not
     //if direction=4 all have been tried, all the neighbours have been looked into
     //before starting with backtracking, the start has been pushed into the stack already in the main function
+  
     if (startx > 0 && maze[startx - 1][starty] == 0 && direction[startx][starty] == 0 && direction[startx - 1][starty] == 0) //checking if the top neighbour can be pushed or not
     {
         direction[startx][starty] = 1;                  //according to the above mentioned comment, as one of the directions has already been looked at, irrespective of whether it was inserted or not
         stack_push(startx - 1, starty, direction);      //push the top element
         count++;                                        //counting the number of elements in the stack at teh moment, start+now pushed element, hence 1++
+      
         if (startx - 1 == finishx && starty == finishy) //if the pushed element, i.e, the top of stack is the finish
         {
             path_number++;       //increasing the total number of paths by 1
@@ -106,6 +109,7 @@ void backtracking(int startx, int starty, int finishx, int finishy, int **maze, 
         else
             backtracking(startx - 1, starty, finishx, finishy, maze, direction, x, y); //if the topmost element is not finish, then simply call backtracking for the topmost element now
     }
+  
     direction[startx][starty] = 1; //according to the above mentioned comment, as one of the directions has already been looked at, irrespective of whether it was inserted or not
     //the same thing is done below for all the four directions
     if (starty > 0 && maze[startx][starty - 1] == 0 && direction[startx][starty] == 1 && direction[startx][starty - 1] == 0)
@@ -123,6 +127,7 @@ void backtracking(int startx, int starty, int finishx, int finishy, int **maze, 
         else
             backtracking(startx, starty - 1, finishx, finishy, maze, direction, x, y);
     }
+  
     direction[startx][starty] = 2;
     if (startx != x - 1 && maze[startx + 1][starty] == 0 && direction[startx][starty] == 2 && direction[startx + 1][starty] == 0)
     {
@@ -139,6 +144,7 @@ void backtracking(int startx, int starty, int finishx, int finishy, int **maze, 
         else
             backtracking(startx + 1, starty, finishx, finishy, maze, direction, x, y);
     }
+  
     direction[startx][starty] = 3;
     if (starty != y - 1 && maze[startx][starty + 1] == 0 && direction[startx][starty] == 3 && direction[startx][starty + 1] == 0)
     {
@@ -155,11 +161,13 @@ void backtracking(int startx, int starty, int finishx, int finishy, int **maze, 
         else
             backtracking(startx, starty + 1, finishx, finishy, maze, direction, x, y);
     }
+  
     direction[startx][starty] = 0; //all possible neighbours have been visited and yet no path has been found from this element and hence it needs to be popped, so direction=0
     stack_pop();
     count--;
     return;
 }
+
 
 void display_path(int count) //displays the path
 {
@@ -200,6 +208,7 @@ int **insert_at_tail(int startx, int starty, int **visited) //inserting element 
     temp = (node *)malloc(sizeof(node));
     temp->xcoord = startx;
     temp->ycoord = starty;
+  
     if (path == NULL)       //path is null only at the very beginning, after that any element which is dequeued becomec path
         temp->distance = 0; //hence distance of start from start is 0
     else
@@ -227,6 +236,7 @@ void remove_at_first(void) //dequeuing, the element that is dequeued is for the 
     temp->next = NULL;
     path = temp;
 }
+
 
 int lee(int **maze, int finishx, int finishy, int x, int y, int **visited) // lee algorithm, uses BFS
 {
@@ -257,6 +267,7 @@ int lee(int **maze, int finishx, int finishy, int x, int y, int **visited) // le
     return i;
 }
 
+
 int minDistance(int dist[], bool sptSet[])
 {
     // Initialize min value
@@ -268,6 +279,7 @@ int minDistance(int dist[], bool sptSet[])
 
     return min_index;
 }
+
 
 void dijkstra(int graph[vertices][vertices], int src)
 {
@@ -317,8 +329,10 @@ int main()
     node *path = NULL;
     int **visited; //is a x y size matrix, stores 0 or 1, 0 if the correspondind element of the maze is not yet visited, and 1 if it has been visited, used in lee algo
     int found;     //stores the info whether a path has been found or not
+  
     printf("Enter the number of rows and columns of the maze: ");
     scanf("%d%d", &y, &x);
+  
     c = (char *)malloc(2 * y * sizeof(char));
     int **maze; //storing the maze
     maze = (int **)malloc(x * sizeof(int *));
@@ -333,6 +347,7 @@ int main()
             visited[i][j] = 0;
         }
     }
+  
     printf("Enter the maze. Remember that 0 represents traversable path of the maze while 1 is non-traversable!\n");
     printf("No other value is allowed!\n");
     for (i = 0; i < x; i++)
@@ -348,6 +363,7 @@ int main()
             }
         }
     }
+  
     printf("\nEnter the coordinates of start and finish! Remember they must be cells with cell value 0 so that they are traversable!\n");
     printf("Start: "); //starting coordinate
     scanf(" %c%d%c%d%c", &trash_value, &startx, &trash_value, &starty, &trash_value);
@@ -363,6 +379,7 @@ int main()
         printf("Error: Wrong Inputs!\n");
         return 0;
     }
+  
     printf("\nTo find the shortest path from source to finish you are given three algorithms.\n1. Backtracking using stacks (Will provide you with all possible paths as well!)\n2. Lee Algorithm based on BFS\n3. Dijkstra's shortest path Algorithm\nEnter B for finding all possible paths or length of shortest path by Backtracking\nEnter L for finding shortest path length by Lee Algorithm \nEnter D for finding shortest path length by Dijkstra's Algorithm\nEnter any other character to Quit\nEnter your choice:\n");
     scanf(" %c", &algo);
 
@@ -370,6 +387,7 @@ int main()
     {
         switch (algo)
         {
+            
         case 'L':
             visited = insert_at_tail(startx, starty, visited);  //inserting the start into the queue
             found = lee(maze, finishx, finishy, x, y, visited); //calling lee and storing the return in found
@@ -379,6 +397,7 @@ int main()
                 return 0;
             }
             break;
+            
         case 'B':
             for (i = 0; i < x; i++) //a matrix just the same as visited is needed, which i have called direction in backtracking related functioms, stack push, stack pop, backtracking, display path
             {                       // so for that, since visited is not useful anymore, i re-write all elements of visited to 0
@@ -398,6 +417,7 @@ int main()
             printf("The total number of shortest paths are: %d\n", shortest_path_number);
             printf("The total paths are: %d\n", path_number);
             break;
+            
         case 'D':
             for (i = 0; i < x; i++)
             {
@@ -438,7 +458,7 @@ int main()
         scanf(" %c", &algo);
     }
 
-    printf("\nEND");
+    printf("\nEND\n");
 
     //freeing memory
     free(maze);
