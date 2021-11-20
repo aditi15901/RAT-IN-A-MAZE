@@ -1,13 +1,15 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 int path_number = 0; //eventually stores the number of paths
-char random; //just a random character used at random locations while taking input
+char random_value; //just a random character used at random locations while taking input
 int length=0; //eventually stores the length of the shortest path
 int count=0; //stores the length of each path at different occasions, used to determine if a particular path is the shortest or not
 int shortest_path_number=0; //eventually stores the numer of shortest paths
 
+void display_path(int count) ;
 typedef struct node //used for queue implementation
 {
     int xcoord; //x coordinate of the stored element
@@ -149,7 +151,7 @@ void backtracking(int startx, int starty, int finishx, int finishy, int **maze, 
 void display_path(int count) //displays the path
 {
     tnode *temp = stackhead;
-    if (random == 'A') //displays all paths
+    if (random_value == 'A') //displays all paths
     {
         if(count==length) //to calculate the number of shortest paths, as length stores the length of the shortest path
             shortest_path_number++;
@@ -160,7 +162,7 @@ void display_path(int count) //displays the path
         }
         printf("(%d,%d)\n", temp->x, temp->y);
     }
-    else if(random=='S') //displays only the shortest path
+    else if(random_value=='S') //displays only the shortest path
     {
         if (count == length) //if the shortest path found, only then print it
         {
@@ -284,14 +286,14 @@ int main()
     }
     printf("Enter the coordinates of start and finish, both of which have to be the cells with 0 value, hence traversable\n");
     printf("Start: "); //starting coordinate
-    scanf(" %c%d%c%d%c", &random, &startx, &random, &starty, &random);
+    scanf(" %c%d%c%d%c", &random_value, &startx, &random_value, &starty, &random_value);
     if (startx < 0 || startx > x - 1 || starty < 0 || starty > y - 1 || maze[startx][starty]==1)
     {
         printf("Error: Wrong inputs\n");
         return 0;
     }
     printf("finish: "); //ending coordinate
-    scanf(" %c%d%c%d%c", &random, &finishx, &random, &finishy, &random);
+    scanf(" %c%d%c%d%c", &random_value, &finishx, &random_value, &finishy, &random_value);
     if (finishx < 0 || finishx > x - 1 || finishy < 0 || finishy > y - 1 || maze[startx][starty]==1)
     {
         printf("Error: Wrong inputs\n");
@@ -312,8 +314,8 @@ int main()
     stack_push(startx, starty, visited);
     printf("Do you want to see all possible paths or just the shortest paths\n");
     printf("Enter A for all paths and S for shortest: ");
-    scanf(" %c", &random);
-    if (random != 'S' && random != 'A')
+    scanf(" %c", &random_value);
+    if (random_value != 'S' && random_value != 'A')
     {
         printf("Invalid\n");
         return 0;
