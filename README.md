@@ -27,3 +27,5 @@ for finish and start<br/>
 (a,b)<br/>
 
 first the program asks for the size of the maze, then it asks for the maze itself, and then it asks for the start and finish points
+
+Algo used lee, backtracking
