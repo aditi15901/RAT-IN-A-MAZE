@@ -1,35 +1,55 @@
-# 2020CSB1064_2020CSB1089_2020CSB1092_RAT-IN-A-MAZE<br />
-Members Names:  
-Aditi Das     (2020CSB1064)<br/>
-Isha Goyal    (2020CSB1089)<br/>
-Jyoti Dhiman  (2020CSB1092)<br/>
+# CS201-Project
 
-for size of the maze simply right <br/>
-x y<br/>
-0 are traversable while 1 are non-traversable<br/>
+**GROUP MEMBERS :-**
 
-I have 2 different mazes that can be used, you can take either of them as input<br/>
-The input of the maze is as follows:<br/>
+* Aditi Das – 2020CSB1064
+* Isha Goyal – 2020CSB1089
+* Jyoti Dhiman– 2020CSB1092
 
-0 0 0 0 0 1 1 0 0 0<br/>
-1 0 0 0 0 0 1 0 1 0<br/>
-1 1 0 1 0 0 0 1 1 0<br/>
-0 1 0 0 0 1 0 0 1 0<br/>
-1 1 1 0 1 1 1 0 1 0<br/>
-0 1 0 0 0 1 1 0 0 1<br/>
-1 1 1 1 0 1 1 0 1 0<br/>
-1 0 0 0 0 0 0 0 1 1<br/>
-0 0 0 0 0 1 1 0 0 0<br/>
-1 1 0 1 1 0 0 1 1 0<br/>
+---
+**RAT IN THE MAZE:<br/>**
+**ANALYSING DIFFERENT MAZE TRAVERSAL ALGORITHMS FOR SHORTEST PATH**
 
-0 1 1 1<br/>
-0 0 1 0<br/>
-1 0 1 1<br/>
-0 0 0 0<br/>
+#### 1. First we take the size of the maze as input i.e. no. of rows and columns.
+      For size of the maze simply write: 
+      x y
 
-for finish and start<br/>
-(a,b)<br/>
+#### 2. Then the maze is taken as input from the user where 0 is traversable while 1 is non-traversable. We have 2 different mazes that can be used, you can take           either of them as input.
+        The input of the maze is as follows:
 
-first the program asks for the size of the maze, then it asks for the maze itself, and then it asks for the start and finish points
+        Maze 1 of size 10X10 used:
+        0 0 0 0 0 1 1 0 0 0
+        1 0 0 0 0 0 1 0 1 0
+        1 1 0 1 0 0 0 1 1 0
+        0 1 0 0 0 1 0 0 1 0
+        1 1 1 0 1 1 1 0 1 0
+        0 1 0 0 0 1 1 0 0 1
+        1 1 1 1 0 1 1 0 1 0
+        1 0 0 0 0 0 0 0 1 1
+        0 0 0 0 0 1 1 0 0 0
+        1 1 0 1 1 0 0 1 1 0
 
-Algo used lee, backtracking
+        Maze 2 of size 4X4 used:
+        0 1 1 1
+        0 0 1 0
+        1 0 1 1
+        0 0 0 0
+
+#### 3. The coordinates of start and finish are taken as input next.
+        The coordinates must be typed as follows:
+        (a,b)
+
+#### 4. User is then given the choice to select any of the three algorithms used to get the shortest path length or the path itself!
+         Algorithms used in this project are:
+            1. Backtracking using stacks 
+              (To find only the shortest paths, the length of the shortest path is a pre-requisite, and hence Lee algorithm will be run along with Backtracking)
+            2. Lee algorithm which is based on BFS
+            3. Dijkstra's Algorithm which is a greedy algorithm for graphs 
+            
+           →Enter B for finding all possible paths or shortest path by Backtracking.
+            (In this A should be entered for displaying all possible paths while S should be entered for displaying only the shortest path.)
+           →Enter L for finding shortest path length by Lee Algorithm. 
+           →Enter D for finding shortest path length by Dijkstra's Algorithm.
+           →Enter any other character to Quit.
+           
+#### The user can choose between the above algorithms till he enters any other character other than the ones mentioned. The program terminates after that. We have also used different colors in output for better readability. 
