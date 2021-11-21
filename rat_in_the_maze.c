@@ -22,25 +22,27 @@ int shortest_path_number = 0; //eventually stores the numer of shortest paths
 int vertices;                 // number of vertices in the graph for Dijkstra
 int end;                      // stores end vertex  of maze for Dijkstra Algorithm
 
-void cyan()
+
+void cyan() //prints text in Cyan color
 {
     printf("\033[1;36m");
 }
 
-void red()
+void red() //prints text in Red color
 {
     printf("\033[1;31m");
 }
 
-void white()
+void white() //prints text in White color
 {
     printf("\033[1;37m");
 }
 
-void blue()
+void blue() //prints text in Blue color
 {
     printf("\033[1;34m");
 }
+
 
 typedef struct node //used for queue implementation
 {
@@ -50,9 +52,11 @@ typedef struct node //used for queue implementation
     struct node *next;
 } node;
 
+
 node *path = NULL; //used to save the dequeued node
 node *head = NULL; //used for queue
 node *tail = NULL; //end of queue
+
 
 typedef struct tnode //used for stack implementation
 {
@@ -62,8 +66,10 @@ typedef struct tnode //used for stack implementation
     struct tnode *prev;
 } tnode;
 
+
 tnode *stackhead = NULL;
 tnode *stacktop = NULL;
+
 
 void stack_push(int startx, int starty, int **direction)
 {
@@ -86,6 +92,7 @@ void stack_push(int startx, int starty, int **direction)
     }
 }
 
+
 void stack_pop()
 {
     tnode *temp;
@@ -102,7 +109,9 @@ void stack_pop()
     }
 }
 
+
 void display_path(int count);
+
 
 void backtracking(int startx, int starty, int finishx, int finishy, int **maze, int **direction, int x, int y) //bakctracking algo
 {
@@ -188,6 +197,7 @@ void backtracking(int startx, int starty, int finishx, int finishy, int **maze, 
     return;
 }
 
+
 void display_path(int count) //displays the path
 {
     tnode *temp = stackhead;
@@ -228,7 +238,8 @@ void display_path(int count) //displays the path
     return;
 }
 
-//after this are functions related to lee algo
+
+/* after this are the functions related to Lee Algorithm */
 
 int **insert_at_tail(int startx, int starty, int **visited) //inserting element in the queue
 {
@@ -256,6 +267,7 @@ int **insert_at_tail(int startx, int starty, int **visited) //inserting element 
     return visited;
 }
 
+
 void remove_at_first(void) //dequeuing, the element that is dequeued is for the time pointed at by path, so that its values can be used for comparison
 {
     node *temp = head;
@@ -265,6 +277,7 @@ void remove_at_first(void) //dequeuing, the element that is dequeued is for the 
     temp->next = NULL;
     path = temp;
 }
+
 
 int lee(int **maze, int finishx, int finishy, int x, int y, int **visited) // lee algorithm, uses BFS
 {
@@ -298,6 +311,8 @@ int lee(int **maze, int finishx, int finishy, int x, int y, int **visited) // le
     return i;
 }
 
+/* after this are the functions related to Dijkstra's Algorithm */
+
 int minDistance(int dist[], bool sptSet[])
 {
     // Initialize min value
@@ -309,6 +324,7 @@ int minDistance(int dist[], bool sptSet[])
 
     return min_index;
 }
+
 
 void dijkstra(int graph[vertices][vertices], int src)
 {
@@ -361,6 +377,7 @@ void dijkstra(int graph[vertices][vertices], int src)
     white();
 }
 
+
 int main()
 {
     int x, y, i, j, c1 = 1;
@@ -371,10 +388,12 @@ int main()
     int **visited; //is a x y size matrix, stores 0 or 1, 0 if the correspondind element of the maze is not yet visited, and 1 if it has been visited, used in lee algo
     int found;     //stores the info whether a path has been found or not
     
+  
     white();
     printf("Enter the number of rows and columns of the maze: ");
     scanf("%d%d", &y, &x);
 
+  
     c = (char *)malloc(2 * y * sizeof(char));
     int **maze; //storing the maze
     maze = (int **)malloc(x * sizeof(int *));
@@ -390,6 +409,7 @@ int main()
         }
     }
 
+  
     printf("\nEnter the maze. Remember that 0 represents traversable path of the maze while 1 is non-traversable!\n");
     printf("No other value is allowed!\n");
     for (i = 0; i < x; i++)
@@ -408,6 +428,7 @@ int main()
         }
     }
 
+  
     printf("\nEnter the coordinates of start and finish! Remember they must be cells with cell value 0 so that they are traversable!\n");
     printf("Start: "); //starting coordinate
     scanf(" %c%d%c%d%c", &trash_value, &startx, &trash_value, &starty, &trash_value);
@@ -427,7 +448,8 @@ int main()
         white();
         return 0;
     }
-    
+ 
+  
     blue();
     printf("\nTo find the shortest path from source to finish you are given three algorithms.\n1. Backtracking using stacks (Will provide you with all possible paths as well!)\n2. Lee Algorithm based on BFS\n3. Dijkstra's shortest path Algorithm\n\n");
     white();
@@ -572,6 +594,7 @@ int main()
 
             dijkstra(graph, visited[startx][starty] - 2);
         }
+      
         printf("\n→Enter B for finding all possible paths or shortest path by Backtracking.\n (To find only the shortest paths, the length of the shortest path is a pre-requisite, and hence Lee algorithm will be run along with Backtracking)\n→Enter L for finding shortest path length by Lee Algorithm. \n→Enter D for finding shortest path length by Dijkstra's Algorithm.\n→Enter any other character to Quit\n\nEnter your choice again:\n");
         scanf(" %c", &algo);
     }
