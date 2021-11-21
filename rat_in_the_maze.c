@@ -37,6 +37,11 @@ void white()
     printf("\033[1;37m");
 }
 
+void blue()
+{
+    printf("\033[1;34m");
+}
+
 typedef struct node //used for queue implementation
 {
     int xcoord;   //x coordinate of the stored element
@@ -365,7 +370,8 @@ int main()
     node *path = NULL;
     int **visited; //is a x y size matrix, stores 0 or 1, 0 if the correspondind element of the maze is not yet visited, and 1 if it has been visited, used in lee algo
     int found;     //stores the info whether a path has been found or not
-
+    
+    white();
     printf("Enter the number of rows and columns of the maze: ");
     scanf("%d%d", &y, &x);
 
@@ -421,8 +427,11 @@ int main()
         white();
         return 0;
     }
-
-    printf("\nTo find the shortest path from source to finish you are given three algorithms.\n1. Backtracking using stacks (Will provide you with all possible paths as well!)\n2. Lee Algorithm based on BFS\n3. Dijkstra's shortest path Algorithm\n\n→Enter B for finding all possible paths or shortest path by Backtracking.\n (To find only the shortest paths, the length of the shortest path is a pre-requisite, and hence Lee algorithm will be run along with Backtracking.)\n→Enter L for finding shortest path length by Lee Algorithm. \n→Enter D for finding shortest path length by Dijkstra's Algorithm.\n→Enter any other character to Quit.\n\nEnter your choice:\n");
+    
+    blue();
+    printf("\nTo find the shortest path from source to finish you are given three algorithms.\n1. Backtracking using stacks (Will provide you with all possible paths as well!)\n2. Lee Algorithm based on BFS\n3. Dijkstra's shortest path Algorithm\n\n");
+    white();
+    printf("→Enter B for finding all possible paths or shortest path by Backtracking.\n (To find only the shortest paths, the length of the shortest path is a pre-requisite, and hence Lee algorithm will be run along with Backtracking.)\n→Enter L for finding shortest path length by Lee Algorithm. \n→Enter D for finding shortest path length by Dijkstra's Algorithm.\n→Enter any other character to Quit.\n\nEnter your choice:\n");
     scanf(" %c", &algo);
 
     while (algo == 'L' || algo == 'B' || algo == 'D')
@@ -446,7 +455,6 @@ int main()
                 red();
                 printf("No path found!\n");
                 white();
-                return 0;
             }
             break;
 
@@ -495,7 +503,6 @@ int main()
                     red();
                     printf("No path found!\n");
                     white();
-                    return 0;
                 }
                 for (i = 0; i < x; i++)
                 {
@@ -559,7 +566,7 @@ int main()
         scanf(" %c", &algo);
     }
 
-    printf("\033[1;34m");
+    blue();
     printf("\nEND\n");
     white();
 
