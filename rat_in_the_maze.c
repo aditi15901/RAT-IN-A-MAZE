@@ -16,6 +16,7 @@
 int path_number = 0;          //eventually stores the number of paths
 char trash_value;             //just a random character used at random locations while taking input
 int length = 0;               //eventually stores the length of the shortest path
+int length1=0;
 int count = 0;                //stores the length of each path at different occasions, used to determine if a particular path is the shortest or not
 int shortest_path_number = 0; //eventually stores the numer of shortest paths
 int vertices;                 // number of vertices in the graph for Dijkstra
@@ -29,7 +30,7 @@ typedef struct node //used for queue implementation
     struct node *next;
 } node;
 
-node *path;        //used to save the dequeued node
+node *path=NULL;        //used to save the dequeued node
 node *head = NULL; //used for queue
 node *tail = NULL; //end of queue
 
@@ -172,10 +173,17 @@ void backtracking(int startx, int starty, int finishx, int finishy, int **maze, 
 void display_path(int count) //displays the path
 {
     tnode *temp = stackhead;
+    if(length1==0) //calculates the total number of shortest_paths, by storing the smallest lengths so far in length1
+        length1=count;
+    if (count == length1) 
+        shortest_path_number++;
+    else if(count<length1)
+    {
+        shortest_path_number=1;
+        length1=count;
+    }
     if (trash_value == 'A') //displays all paths
     {
-        if (count == length) //to calculate the number of shortest paths, as length stores the length of the shortest path
-            shortest_path_number++;
         while (temp != stacktop)
         {
             printf("(%d,%d)->", temp->x, temp->y);
@@ -187,7 +195,6 @@ void display_path(int count) //displays the path
     {
         if (count == length) //if the shortest path found, only then print it
         {
-            shortest_path_number++;
             while (temp != stacktop)
             {
                 printf("(%d,%d)->", temp->x, temp->y);
@@ -250,6 +257,7 @@ int lee(int **maze, int finishx, int finishy, int x, int y, int **visited) // le
         {
             length = path->distance; //net length of the path
             printf("The shortest possible path length calculated by Lee Algorithm is of distance %d units!\n", path->distance);
+            path=NULL;
             return i + 1; //to indicate that the path been found
         }
         else
@@ -389,6 +397,14 @@ int main()
         {
             
         case 'L':
+            length=0;
+            head=NULL;
+            tail=NULL;
+            for(i=0;i<x;i++)
+            {
+                for(j=0;j<y;j++)
+                    visited[i][j]=0;
+            }
             visited = insert_at_tail(startx, starty, visited);  //inserting the start into the queue
             found = lee(maze, finishx, finishy, x, y, visited); //calling lee and storing the return in found
             if (found == 0)
@@ -399,6 +415,15 @@ int main()
             break;
             
         case 'B':
+            path_number=0;
+            shortest_path_number=0;
+            length=0;
+            length1=0;
+            count=0;
+            head=NULL;
+            tail=NULL;
+            stacktop=NULL;
+            stackhead=NULL;
             for (i = 0; i < x; i++) //a matrix just the same as visited is needed, which i have called direction in backtracking related functioms, stack push, stack pop, backtracking, display path
             {                       // so for that, since visited is not useful anymore, i re-write all elements of visited to 0
                 for (j = 0; j < y; j++)
@@ -413,9 +438,31 @@ int main()
                 printf("Invalid!\n");
                 return 0;
             }
-            backtracking(startx, starty, finishx, finishy, maze, visited, x, y);
-            printf("The total number of shortest paths are: %d\n", shortest_path_number);
-            printf("The total paths are: %d\n", path_number);
+            else if(trash_value=='A')
+            {
+                backtracking(startx, starty, finishx, finishy, maze, visited, x, y);
+                printf("The total number of shortest paths are: %d\n", shortest_path_number);
+                printf("The total paths are: %d\n", path_number);
+            }
+            else if(trash_value=='S')
+            {
+                visited = insert_at_tail(startx, starty, visited);
+                found = lee(maze, finishx, finishy, x, y, visited); //calling lee and storing the return in found
+                if (found == 0)
+                {
+                    printf("No path found!\n");
+                    return 0;
+                }
+                for(i=0;i<x;i++)
+                {
+                    for(j=0;j<y;j++)
+                        visited[i][j]=0;
+                }
+                backtracking(startx, starty, finishx, finishy, maze, visited, x, y);
+                printf("The total number of shortest paths are: %d\n", shortest_path_number);
+                printf("The total paths are: %d\n", path_number);
+            }
+            
             break;
             
         case 'D':
