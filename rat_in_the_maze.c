@@ -489,10 +489,19 @@ int main()
                 cyan();
                 printf("All the possible paths from start to finish are as follows:\n");
                 backtracking(startx, starty, finishx, finishy, maze, visited, x, y);
-                cyan();
-                printf("The total number of shortest paths are: %d\n", shortest_path_number);
-                printf("The total paths are: %d\n", path_number);
-                white();
+                if(path_number!=0)
+                {
+                    cyan();
+                    printf("The total number of shortest paths are: %d\n", shortest_path_number);
+                    printf("The total paths are: %d\n", path_number);
+                    white();
+                }
+                else
+                {
+                    red();
+                    printf("No path found!\n");
+                    white();
+                }
             }
             else if (trash_value == 'S')
             {
@@ -503,6 +512,7 @@ int main()
                     red();
                     printf("No path found!\n");
                     white();
+                    break;
                 }
                 for (i = 0; i < x; i++)
                 {
