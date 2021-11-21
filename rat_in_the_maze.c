@@ -86,14 +86,12 @@ void display_path(int count);
 
 void backtracking(int startx, int starty, int finishx, int finishy, int **maze, int **direction, int x, int y) //bakctracking algo
 {
-  
     //if direction=0 that means that the top neighbour has to looked into, whether it can be pushed into stack or not, this also indicates that this particular element has not yet been pushed into the stack
     //if direction=1 that means that the left neighbour has to looked into, whether it can be pushed into stack or not
     //if direction=2 that means that the bottom neighbour has to looked into, whether it can be pushed into stack or not
     //if direction=3 that means that the right neighbour has to looked into, whether it can be pushed into stack or not
     //if direction=4 all have been tried, all the neighbours have been looked into
     //before starting with backtracking, the start has been pushed into the stack already in the main function
-  
     if (startx > 0 && maze[startx - 1][starty] == 0 && direction[startx][starty] == 0 && direction[startx - 1][starty] == 0) //checking if the top neighbour can be pushed or not
     {
         direction[startx][starty] = 1;                  //according to the above mentioned comment, as one of the directions has already been looked at, irrespective of whether it was inserted or not
@@ -388,7 +386,7 @@ int main()
         return 0;
     }
   
-    printf("\nTo find the shortest path from source to finish you are given three algorithms.\n1. Backtracking using stacks (Will provide you with all possible paths as well!)\n2. Lee Algorithm based on BFS\n3. Dijkstra's shortest path Algorithm\nEnter B for finding all possible paths or length of shortest path by Backtracking\nEnter L for finding shortest path length by Lee Algorithm \nEnter D for finding shortest path length by Dijkstra's Algorithm\nEnter any other character to Quit\nEnter your choice:\n");
+    printf("\nTo find the shortest path from source to finish you are given three algorithms.\n1. Backtracking using stacks (Will provide you with all possible paths as well!)\n2. Lee Algorithm based on BFS\n3. Dijkstra's shortest path Algorithm\nEnter B for finding all possible paths or shortest path by Backtracking\nTo find only the shortest paths, the length of the shortest path is a pre-requisite, and hence Lee algorithm will be run along with Backtracking\nEnter L for finding shortest path length by Lee Algorithm \nEnter D for finding shortest path length by Dijkstra's Algorithm\nEnter any other character to Quit\nEnter your choice:\n");
     scanf(" %c", &algo);
 
     while (algo == 'L' || algo == 'B' || algo == 'D')
@@ -466,42 +464,50 @@ int main()
             break;
             
         case 'D':
+            c1=1;
+            for(i=0;i<x;i++)
+            {
+                for(j=0;j<y;j++)
+                {
+                    visited[i][j]=maze[i][j];
+                }
+            }
             for (i = 0; i < x; i++)
             {
                 for (j = 0; j < y; j++)
                 {
 
-                    if (maze[i][j] == 0)
-                        maze[i][j] = ++c1;
+                    if (visited[i][j] == 0)
+                        visited[i][j] = ++c1;
                 }
             }
             vertices = c1 - 1;
             int graph[c1 - 1][c1 - 1];
-            end = maze[finishx][finishy] - 2;
+            end = visited[finishx][finishy] - 2;
             memset(graph, 0, sizeof(graph));
 
             for (i = 0; i < x; i++)
             {
                 for (j = 0; j < y; j++)
                 {
-                    if (maze[i][j] == 1)
+                    if (visited[i][j] == 1)
                         continue;
-                    if (i + 1 < x && (maze[i + 1][j] != 1))
+                    if (i + 1 < x && (visited[i + 1][j] != 1))
                     {
-                        graph[maze[i][j] - 2][maze[i + 1][j] - 2] = 1;
-                        graph[maze[i + 1][j] - 2][maze[i][j] - 2] = 1;
+                        graph[visited[i][j] - 2][visited[i + 1][j] - 2] = 1;
+                        graph[visited[i + 1][j] - 2][visited[i][j] - 2] = 1;
                     }
-                    if (j + 1 < y && (maze[i][j + 1] != 1))
+                    if (j + 1 < y && (visited[i][j + 1] != 1))
                     {
-                        graph[maze[i][j] - 2][maze[i][j + 1] - 2] = 1;
-                        graph[maze[i][j + 1] - 2][maze[i][j] - 2] = 1;
+                        graph[visited[i][j] - 2][visited[i][j + 1] - 2] = 1;
+                        graph[visited[i][j + 1] - 2][visited[i][j] - 2] = 1;
                     }
                 }
             }
 
-            dijkstra(graph, maze[startx][starty] - 2);
+            dijkstra(graph, visited[startx][starty] - 2);
         }
-        printf("\nEnter B for finding all possible paths or length of shortest path by Backtracking\nEnter L for finding shortest path length by Lee Algorithm \nEnter D for finding shortest path length by Dijkstra's Algorithm\nEnter any other character to Quit\nEnter your choice again:\n");
+        printf("\nEnter B for finding all possible paths or shortest path by Backtracking\nTo find only the shortest paths, the length of the shortest path is a pre-requisite, and hence Lee algorithm will be run along with Backtracking\nEnter L for finding shortest path length by Lee Algorithm \nEnter D for finding shortest path length by Dijkstra's Algorithm\nEnter any other character to Quit\nEnter your choice again:\n");
         scanf(" %c", &algo);
     }
 
