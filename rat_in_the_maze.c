@@ -599,7 +599,7 @@ int main()
                 }
             }
 
-            dijkstra(graph, visited[startx][starty] - 2);
+            dijkstra(graph, visited[startx][starty] - 2); //prints shortest path length by dijkstra's algorithm 
         }
       
         printf("\n→Enter B for finding all possible paths or shortest path by Backtracking.\n (To find only the shortest paths, the length of the shortest path is a pre-requisite, and hence Lee algorithm will be run along with Backtracking)\n→Enter L for finding shortest path length by Lee Algorithm. \n→Enter D for finding shortest path length by Dijkstra's Algorithm.\n→Enter any other character to Quit\n\nEnter your choice again:\n");
