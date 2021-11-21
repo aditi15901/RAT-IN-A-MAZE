@@ -1,8 +1,8 @@
 # 2020CSB1064_2020CSB1089_2020CSB1092_RAT-IN-A-MAZE<br />
 Members Names:  
-                Aditi Das     (2020CSB1064)<br/>
-                Isha Goyal    (2020CSB1089)<br/>
-                Jyoti Dhiman  (2020CSB1092)<br/>
+Aditi Das     (2020CSB1064)<br/>
+Isha Goyal    (2020CSB1089)<br/>
+Jyoti Dhiman  (2020CSB1092)<br/>
 
 for size of the maze simply right <br/>
 x y<br/>
