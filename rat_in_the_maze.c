@@ -352,7 +352,7 @@ void dijkstra(int graph[vertices][vertices], int src)
     if (dist[end] == INT_MAX)
     {
         red();
-        printf("No Path\n");
+        printf("No path found!\n");
         white();
         return;
     }
